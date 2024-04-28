@@ -26,8 +26,8 @@
                 <div class="card-body card-body-padding px-3 d-flex align-items-center justify-content-between">
                     <div class="ps-lg-1">
                         <div class="d-flex align-items-center justify-content-between">
-                            <p class="mb-0 font-weight-medium me-3 buy-now-text">Free 24/7 customer support, updates,
-                                and more with this template!</p>
+                            {{-- <p class="mb-0 font-weight-medium me-3 buy-now-text">Free 24/7 customer support, updates,
+                                and more with this template!</p> --}}
                             <a href="https://www.bootstrapdash.com/product/majestic-admin-pro/?utm_source=navbar&utm_medium=productdemo&utm_campaign=getpro"
                                 target="_blank" class="btn me-2 buy-now-btn border-0">Buy Now</a>
                         </div>
