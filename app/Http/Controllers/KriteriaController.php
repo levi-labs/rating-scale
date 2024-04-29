@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kriteria;
 use Illuminate\Http\Request;
 
 class KriteriaController extends Controller
@@ -12,6 +13,7 @@ class KriteriaController extends Controller
     public function index()
     {
         $title = 'Kriteria Page';
+        $data  = Kriteria::all();
     }
 
     /**

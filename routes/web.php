@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KriteriaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,5 +20,9 @@ Route::get('/', function () {
 });
 
 Route::controller(DashboardController::class)->group(function () {
+    Route::get('/', 'index');
+});
+
+Route::controller(KriteriaController::class)->group(function () {
     Route::get('/', 'index');
 });
