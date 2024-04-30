@@ -14,6 +14,8 @@ class KriteriaController extends Controller
     {
         $title = 'Kriteria Page';
         $data  = Kriteria::all();
+
+        return view('pages.kriteria.index', compact('title', 'data'));
     }
 
     /**

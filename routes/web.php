@@ -19,10 +19,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::controller(DashboardController::class)->group(function () {
+Route::controller(DashboardController::class)->prefix('dashboard')->group(function () {
     Route::get('/', 'index');
 });
 
-Route::controller(KriteriaController::class)->group(function () {
+Route::controller(KriteriaController::class)->prefix('kriteria')->group(function () {
     Route::get('/', 'index');
 });
