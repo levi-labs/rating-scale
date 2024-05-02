@@ -105,6 +105,7 @@ class IndikatorController extends Controller
     public function destroy(Indikator $indikator)
     {
         $indikator->delete();
+
         return redirect()->route('indikator.index')->with('success', 'Data Berhasil');
     }
 }
