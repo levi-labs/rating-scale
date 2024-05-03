@@ -6,12 +6,11 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">{{ $title }}</h4>
-
-                    <form class="forms-sample" action="{{ route('kriteria.store') }}" method="POST">
+                    <form class="forms-sample" action="{{ route('kriteria.store') }}" method="POST" autocomplete="off">
                         @csrf
                         <div class="form-group">
                             <label for="exampleInputUsername1">Nama Kriteria</label>
-                            <input type="text" class="form-control" id="exampleInputUsername1"
+                            <input type="text" class="form-control" id="exampleInputUsername1" autofocus="true"
                                 placeholder="Nama Kriteria" name="nama">
                             @error('nama')
                                 <span class="text-danger text-sm">{{ $message }}</span>

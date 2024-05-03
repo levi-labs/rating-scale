@@ -13,7 +13,7 @@
                         <div class="form-group">
                             <label for="exampleInputUsername1">Nama Kriteria</label>
                             <input type="text" class="form-control" id="exampleInputUsername1"
-                                placeholder="Nama Kriteria" name="nama">
+                                placeholder="Nama Kriteria" name="nama" value="{{ $kriteria->nama }}">
                             @error('nama')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror

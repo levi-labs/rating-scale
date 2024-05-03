@@ -22,25 +22,29 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        1
-                                    </td>
-                                    <td>
-                                        Herman Beck
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('kriteria.edit', 1) }}"
-                                            class="btn btn-outline-warning btn-fw btn-sm">Edit</a>
-                                        <form action="{{ route('kriteria.delete', 1) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-                                        </form>
+                                @foreach ($data as $dt)
+                                    <tr>
+                                        <td>
+                                            {{ $loop->iteration }}
+                                        </td>
+                                        <td>
+                                            {{ $dt->nama }}
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('kriteria.edit', $dt->id) }}"
+                                                class="btn btn-outline-warning btn-fw btn-sm">Edit</a>
+                                            <form action="{{ route('kriteria.delete', $dt->id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                            </form>
 
-                                    </td>
+                                        </td>
 
-                                </tr>
+                                    </tr>
+                                @endforeach
+
                             </tbody>
                         </table>
                     </div>
