@@ -12,7 +12,10 @@ class SkalaController extends Controller
      */
     public function index()
     {
-        //
+        $title      = 'Skala Page';
+        $data       = Skala::all();
+
+        return view('pages.skala.index', compact('title', 'data'));
     }
 
     /**
@@ -20,7 +23,8 @@ class SkalaController extends Controller
      */
     public function create()
     {
-        //
+        $title = 'Create Skala Page';
+        return view('pages.skala.create', compact('title'));
     }
 
     /**
@@ -28,7 +32,15 @@ class SkalaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'skala'         => 'required',
+            'interval'      => 'required',
+            'keterangan'    => 'required',
+        ]);
+
+        Skala::create($request->all());
+
+        return redirect()->route('skala.index')->with('success', 'Skala Berhasil');
     }
 
     /**
@@ -44,7 +56,8 @@ class SkalaController extends Controller
      */
     public function edit(Skala $skala)
     {
-        //
+        $title = 'Edit Skala Page';
+        return view('pages.skala.edit', compact('title', 'skala'));
     }
 
     /**
@@ -52,7 +65,15 @@ class SkalaController extends Controller
      */
     public function update(Request $request, Skala $skala)
     {
-        //
+        $request->validate([
+            'skala'         => 'required',
+            'interval'      => 'required',
+            'keterangan'    => 'required',
+        ]);
+
+        $skala->update($request->all());
+
+        return redirect()->route('skala.index')->with('success', 'Skala Berhasil');
     }
 
     /**
@@ -60,6 +81,8 @@ class SkalaController extends Controller
      */
     public function destroy(Skala $skala)
     {
-        //
+        $skala->delete();
+
+        return redirect()->route('skala.index')->with('success', 'Skala Berhasil');
     }
 }

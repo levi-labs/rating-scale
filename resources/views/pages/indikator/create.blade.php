@@ -10,10 +10,25 @@
                     <form class="forms-sample" action="{{ route('kriteria.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="exampleInputUsername1">Nama Kriteria</label>
+                            <label for="exampleInputUsername1">Nama Indikator</label>
                             <input type="text" class="form-control" id="exampleInputUsername1"
                                 placeholder="Nama Kriteria" name="nama">
                             @error('nama')
+                                <span class="text-danger text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Bobot</label>
+                            <input type="number" class="form-control" id="exampleInputUsername1" name="bobot">
+                            @error('bobot')
+                                <span class="text-danger text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Nilai Pembanding</label>
+                            <input type="number" class="form-control" id="exampleInputUsername1" placeholder="0"
+                                name="nilai_pembanding">
+                            @error('nilai_pembanding')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
                         </div>
