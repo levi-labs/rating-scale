@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndikatorController;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\SkalaController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,4 +51,13 @@ Route::controller(SkalaController::class)->prefix('skala')->group(function () {
     Route::get('/edit/{skala}', 'edit')->name('skala.edit');
     Route::put('/update/{skala}', 'update')->name('skala.update');
     Route::delete('/delete/{skala}', 'destroy')->name('skala.delete');
+});
+
+Route::controller(UserController::class)->prefix('user')->group(function () {
+    Route::get('/', 'index')->name('user.index');
+    Route::get('/create', 'create')->name('user');
+    Route::post('/post', 'store')->name('user');
+    Route::get('/edit/{user}', 'edit')->name('user.edit');
+    Route::put('/update/{user}', 'update')->name('user.update');
+    Route::delete('/delete/{user}', 'destroy')->name('user.delete');
 });
