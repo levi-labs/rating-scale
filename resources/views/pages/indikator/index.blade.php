@@ -5,7 +5,7 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">{{ $title }}</h4>
-                    <a href="{{ route('kriteria.create') }}" class="btn btn-info btn-rounded btn-fw">Tambah</a>
+                    <a href="{{ route('indikator.create') }}" class="btn btn-info btn-rounded btn-fw">Tambah</a>
                     <div class="table-responsive pt-3">
                         <table class="table table-bordered">
                             <thead>
@@ -30,9 +30,9 @@
                                         Herman Beck
                                     </td>
                                     <td>
-                                        <a href="{{ route('kriteria.edit', 1) }}"
+                                        <a href="{{ route('indikator.edit', 1) }}"
                                             class="btn btn-outline-warning btn-fw btn-sm">Edit</a>
-                                        <form action="{{ route('kriteria.delete', 1) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('indikator.delete', 1) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>

@@ -7,7 +7,7 @@
                 <div class="card-body">
                     <h4 class="card-title">{{ $title }}</h4>
 
-                    <form class="forms-sample" action="{{ route('kriteria.store') }}" method="POST">
+                    <form class="forms-sample" action="{{ route('indikator.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="exampleInputUsername1">Nama Indikator</label>
@@ -33,7 +33,7 @@
                             @enderror
                         </div>
                         <button type="submit" class="btn btn-info me-2">Submit</button>
-                        <button type="button" onclick="location.href='{{ route('kriteria.index') }}'"
+                        <button type="button" onclick="location.href='{{ route('indikator.index') }}'"
                             class="btn btn-light">Cancel</button>
                     </form>
                 </div>
