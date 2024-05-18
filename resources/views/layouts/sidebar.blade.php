@@ -19,7 +19,7 @@
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"> <a class="nav-link" href="{{ route('kriteria.index') }}">Kriteria</a>
                         </li>
-                        <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Indikator</a>
+                        <li class="nav-item"> <a class="nav-link" href="{{ route('indikator.index') }}">Indikator</a>
                         </li>
                         <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Pegawai</a>
                         </li>

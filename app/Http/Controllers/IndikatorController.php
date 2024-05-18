@@ -15,7 +15,7 @@ class IndikatorController extends Controller
     {
         $title  = 'Indikator Kinerja';
         $data   = Indikator::all();
-        return view('indikator.index', compact('title', 'data'));
+        return view('pages.indikator.index', compact('title', 'data'));
     }
 
     /**
@@ -25,7 +25,7 @@ class IndikatorController extends Controller
     {
         $title      = 'Input Indikator Kinerja';
         $kriteria   = Kriteria::all();
-        return view('indikator.create', compact('title', 'kriteria'));
+        return view('pages.indikator.create', compact('title', 'kriteria'));
     }
 
     /**
@@ -70,7 +70,7 @@ class IndikatorController extends Controller
         $title      = 'Edit Indikator Kinerja';
         $kriteria   = Kriteria::all();
         $indikator  = Indikator::find($indikator->id);
-        return view('indikator.edit', compact('title', 'kriteria', 'indikator'));
+        return view('pages.indikator.edit', compact('title', 'kriteria', 'indikator'));
     }
 
     /**

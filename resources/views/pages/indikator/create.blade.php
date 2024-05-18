@@ -10,10 +10,22 @@
                     <form class="forms-sample" action="{{ route('indikator.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="exampleInputUsername1">Nama Indikator</label>
-                            <input type="text" class="form-control" id="exampleInputUsername1"
-                                placeholder="Nama Kriteria" name="nama">
+                            <label for="nama">Nama Indikator</label>
+                            <input type="text" class="form-control" id="nama" placeholder="Nama Indikator"
+                                name="nama">
                             @error('nama')
+                                <span class="text-danger text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="kriteria">Kriteria</label>
+                            <select class="form-control form-control-lg" id="kriteria" name="kriteria_id">
+                                <option disabled selected>Pilih Kriteria</option>
+                                @foreach ($kriteria as $kr)
+                                    <option value="{{ $kr->id }}">{{ $kr->nama }}</option>
+                                @endforeach
+                            </select>
+                            @error('kriteria_id')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
                         </div>

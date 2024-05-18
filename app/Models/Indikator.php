@@ -9,5 +9,11 @@ class Indikator extends Model
 {
     use HasFactory;
 
-    protected $table = 'indikator';
+    protected $table = 'indikators';
+
+
+    public function kriteria()
+    {
+        return $this->belongsTo(Kriteria::class, 'kriteria_id', 'id');
+    }
 }
