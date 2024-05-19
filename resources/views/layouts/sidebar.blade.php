@@ -25,6 +25,8 @@
                         </li>
                         <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Nilai</a>
                         </li>
+                        <li class="nav-item"> <a class="nav-link" href="{{ route('skala.index') }}">Skala</a>
+                        </li>
                     </ul>
                 </div>
             </li>

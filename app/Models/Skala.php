@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Skala extends Model
 {
     use HasFactory;
+
+    protected $table = 'skalas';
+
+    protected $fillable = [
+        'nama',
+        'interval',
+        'keterangan',
+    ];
+
+    public $timestamps = false;
 }

@@ -33,7 +33,7 @@ class SkalaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'skala'         => 'required',
+            'nama'         => 'required',
             'interval'      => 'required',
             'keterangan'    => 'required',
         ]);
@@ -66,7 +66,7 @@ class SkalaController extends Controller
     public function update(Request $request, Skala $skala)
     {
         $request->validate([
-            'skala'         => 'required',
+            'nama'         => 'required',
             'interval'      => 'required',
             'keterangan'    => 'required',
         ]);

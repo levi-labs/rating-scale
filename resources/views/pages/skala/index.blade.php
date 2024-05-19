@@ -5,16 +5,22 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">{{ $title }}</h4>
-                    <a href="{{ route('kriteria.create') }}" class="btn btn-info btn-rounded btn-fw">Tambah</a>
+                    <a href="{{ route('skala.create') }}" class="btn btn-info btn-rounded btn-fw">Tambah</a>
                     <div class="table-responsive pt-3">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered text-center">
                             <thead>
                                 <tr>
                                     <th>
                                         #
                                     </th>
                                     <th>
-                                        Kriteria
+                                        Skala
+                                    </th>
+                                    <th>
+                                        Interval
+                                    </th>
+                                    <th>
+                                        Keterangan
                                     </th>
                                     <th>
                                         Options
@@ -29,6 +35,13 @@
                                         </td>
                                         <td>
                                             {{ $dt->nama }}
+                                        </td>
+                                        <td>
+                                            {{ $dt->interval }}
+                                        </td>
+
+                                        <td>
+                                            {{ $dt->keterangan }}
                                         </td>
                                         <td>
                                             <a href="{{ route('kriteria.edit', $dt->id) }}"

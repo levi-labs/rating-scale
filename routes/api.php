@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::get('/kriteria', [App\Http\Controllers\Api\KriteriaApiController::class, 'index']);
+Route::get('/kriteria/{id}', [App\Http\Controllers\Api\KriteriaApiController::class, 'show']);
+Route::post('/kriteria', [App\Http\Controllers\Api\KriteriaApiController::class, 'store']);
+Route::put('/kriteria/{id}', [App\Http\Controllers\Api\KriteriaApiController::class, 'update']);
+Route::delete('/kriteria/{id}', [App\Http\Controllers\Api\KriteriaApiController::class, 'destroy']);
