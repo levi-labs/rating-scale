@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -27,7 +28,7 @@ class UserApiController extends Controller
             $token = JWTAuth::attempt($credentials);
 
             if (!$token) {
-                return response()->json(['error' => 'invalid_credentials'], 401);
+                return response()->json(['error' => 'invalid credentials'], 401);
             }
 
             $userResponse = getUser($request->username);
@@ -40,5 +41,12 @@ class UserApiController extends Controller
         } catch (JWTException $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function logout(): JsonResponse
+    {
+        auth()->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
     }
 }

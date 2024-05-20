@@ -23,9 +23,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [App\Http\Controllers\Api\UserApiController::class, 'login']);
 Route::group(['middleware' => ['jwt.verify']], function ($router) {
+    Route::get('dashboard', [App\Http\Controllers\Api\DashboardApiController::class, 'index']);
     Route::get('/kriteria', [App\Http\Controllers\Api\KriteriaApiController::class, 'index']);
     Route::get('/kriteria/{id}', [App\Http\Controllers\Api\KriteriaApiController::class, 'show']);
     Route::post('/kriteria', [App\Http\Controllers\Api\KriteriaApiController::class, 'store']);
     Route::put('/kriteria/{id}', [App\Http\Controllers\Api\KriteriaApiController::class, 'update']);
     Route::delete('/kriteria/{id}', [App\Http\Controllers\Api\KriteriaApiController::class, 'destroy']);
+
+    Route::post('logout', [App\Http\Controllers\Api\UserApiController::class, 'logout']);
 });
