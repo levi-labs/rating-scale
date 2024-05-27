@@ -12,7 +12,6 @@ class SkalaApiController extends Controller
 {
     public function index(): JsonResponse
     {
-
         try {
             $data = Skala::all();
             return response()->json($data, 200);
@@ -20,7 +19,6 @@ class SkalaApiController extends Controller
             return response()->json(["error" => $e->getMessage()], 500);
         }
     }
-
     public function store(Request $request): JsonResponse
     {
         $request->validate([
