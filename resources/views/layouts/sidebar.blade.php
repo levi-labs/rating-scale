@@ -21,7 +21,7 @@
                         </li>
                         <li class="nav-item"> <a class="nav-link" href="{{ route('indikator.index') }}">Indikator</a>
                         </li>
-                        <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Pegawai</a>
+                        <li class="nav-item"> <a class="nav-link" href="{{ route('pegawai.index') }}">Pegawai</a>
                         </li>
                         <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Nilai</a>
                         </li>

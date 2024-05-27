@@ -35,7 +35,7 @@ class KriteriaApiController extends Controller
         try {
             $data = \App\Models\Kriteria::create($request->all());
             return response()->json([
-                'status' => true,
+                'message' => 'Data created successfully',
                 'data' => $data
             ], 200);
         } catch (\Exception $e) {
@@ -49,10 +49,10 @@ class KriteriaApiController extends Controller
     {
         try {
             $data = \App\Models\Kriteria::find($id);
-            return response()->json([
-                'status' => true,
-                'data' => $data
-            ], 200);
+            return response()->json(
+                $data,
+                200
+            );
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
@@ -66,7 +66,6 @@ class KriteriaApiController extends Controller
             $data = \App\Models\Kriteria::find($id);
             $data->update($request->all());
             return response()->json([
-                'status' => true,
                 'message' => 'Data updated successfully'
             ], 200);
         } catch (\Exception $e) {

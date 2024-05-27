@@ -12,7 +12,9 @@ class PegawaiController extends Controller
      */
     public function index()
     {
-        //
+        $title = 'Daftar Pegawai';
+        $data = Pegawai::all();
+        return view('pages.pegawai.index', compact('data', 'title'));
     }
 
     /**
@@ -20,7 +22,8 @@ class PegawaiController extends Controller
      */
     public function create()
     {
-        //
+        $title = 'Form Input Pegawai';
+        return view('pages.pegawai.create', compact('title'));
     }
 
     /**
@@ -28,7 +31,23 @@ class PegawaiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nip' => 'required',
+            'nama' => 'required',
+            'no_handphone' => 'required',
+            'divisi' => 'required',
+            'email' => 'required',
+
+        ]);
+        $data = new Pegawai();
+        $data->nama_lengkap = $request->nama;
+        $data->jabatan = $request->divisi;
+        $data->email = $request->email;
+        $data->no_hp = $request->no_handphone;
+        $data->nip = $request->nip;
+        $data->alamat = $request->alamat;
+        $data->save();
+        return redirect('/pegawai')->with('success', 'Data Berhasil Ditambahkan');
     }
 
     /**
@@ -44,7 +63,9 @@ class PegawaiController extends Controller
      */
     public function edit(Pegawai $pegawai)
     {
-        //
+        $title = 'Form Edit Pegawai';
+
+        return view('pages.pegawai.edit', compact('title', 'pegawai'));
     }
 
     /**
@@ -52,7 +73,19 @@ class PegawaiController extends Controller
      */
     public function update(Request $request, Pegawai $pegawai)
     {
-        //
+        $request->validate([
+            'nip' => 'required',
+            'nama' => 'required',
+            'no_handphone' => 'required',
+            'divisi' => 'required',
+            'email' => 'required',
+        ]);
+        $data = Pegawai::find($request->id);
+        $data->name = $request->name;
+        $data->email = $request->email;
+        $data->password = $request->password;
+        $data->save();
+        return redirect('/pegawai')->with('success', 'Data Berhasil Diubah');
     }
 
     /**
@@ -60,6 +93,7 @@ class PegawaiController extends Controller
      */
     public function destroy(Pegawai $pegawai)
     {
-        //
+        $pegawai->delete();
+        return redirect('/pegawai')->with('success', 'Data Berhasil Dihapus');
     }
 }

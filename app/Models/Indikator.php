@@ -11,6 +11,13 @@ class Indikator extends Model
 
     protected $table = 'indikators';
 
+    protected $fillable = [
+        'kriteria_id',
+        'nama',
+        'bobot',
+        'nilai_pembanding',
+    ];
+
 
     public function kriteria()
     {

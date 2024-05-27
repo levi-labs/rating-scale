@@ -12,10 +12,27 @@ class IndikatorApiController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $indikator  = Indikator::all();
+            $indikator  = Indikator::with('kriteria')->get();
+
+
+            return response()->json(
+                $indikator,
+                200
+            );
+        } catch (\Exception $e) {
             return response()->json([
-                'data' => $indikator,
-            ], 200);
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function getIndikatorByKriteria($id): JsonResponse
+    {
+        try {
+            $indikator  = Indikator::with('kriteria')->where('kriteria_id', $id)->get();
+            return response()->json(
+                $indikator,
+                200
+            );
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage(),
@@ -41,14 +58,14 @@ class IndikatorApiController extends Controller
     public function show($id): JsonResponse
     {
         try {
-            $indikator = Indikator::find($id);
+            $indikator = Indikator::where('id', $id)->with('kriteria')->first();
             return response()->json(
                 $indikator,
                 200
             );
         } catch (\Exception $e) {
             return response()->json([
-                'message' => $e->getMessage(),
+                'error' => $e->getMessage(),
             ], 500);
         }
     }

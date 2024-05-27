@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndikatorController;
 use App\Http\Controllers\KriteriaController;
+use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\SkalaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,15 @@ Route::controller(KriteriaController::class)->prefix('kriteria')->group(function
     Route::get('/edit/{kriteria}', 'edit')->name('kriteria.edit');
     Route::put('/update/{kriteria}', 'update')->name('kriteria.update');
     Route::delete('/delete/{kriteria}', 'destroy')->name('kriteria.delete');
+});
+
+Route::controller(PegawaiController::class)->prefix('pegawai')->group(function () {
+    Route::get('/', 'index')->name('pegawai.index');
+    Route::get('/create', 'create')->name('pegawai.create');
+    Route::post('/post', 'store')->name('pegawai.store');
+    Route::get('/edit/{pegawai}', 'edit')->name('pegawai.edit');
+    Route::put('/update/{pegawai}', 'update')->name('pegawai.update');
+    Route::delete('/delete/{pegawai}', 'destroy')->name('pegawai.delete');
 });
 
 Route::controller(IndikatorController::class)->prefix('indikator')->group(function () {
