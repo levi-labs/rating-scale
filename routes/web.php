@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndikatorController;
 use App\Http\Controllers\KriteriaController;
+use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\SkalaController;
 use App\Http\Controllers\UserController;
@@ -61,6 +62,15 @@ Route::controller(SkalaController::class)->prefix('skala')->group(function () {
     Route::get('/edit/{skala}', 'edit')->name('skala.edit');
     Route::put('/update/{skala}', 'update')->name('skala.update');
     Route::delete('/delete/{skala}', 'destroy')->name('skala.delete');
+});
+
+Route::controller(NilaiController::class)->prefix('nilai')->group(function () {
+    Route::get('/', 'index')->name('nilai.index');
+    Route::get('/create', 'create')->name('nilai.create');
+    Route::post('/post', 'store')->name('nilai.store');
+    Route::get('/edit/{nilai}', 'edit')->name('nilai.edit');
+    Route::put('/update/{nilai}', 'update')->name('nilai.update');
+    Route::delete('/delete/{nilai}', 'destroy')->name('nilai.delete');
 });
 
 Route::controller(UserController::class)->prefix('user')->group(function () {

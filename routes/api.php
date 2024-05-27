@@ -59,5 +59,6 @@ Route::group(['middleware' => ['jwt.verify']], function ($router) {
 
 
 
+
     Route::post('logout', [App\Http\Controllers\Api\UserApiController::class, 'logout']);
 });
