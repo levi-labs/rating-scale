@@ -23,7 +23,7 @@
                         </li>
                         <li class="nav-item"> <a class="nav-link" href="{{ route('pegawai.index') }}">Pegawai</a>
                         </li>
-                        <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Nilai</a>
+                        <li class="nav-item"> <a class="nav-link" href="{{ route('nilai.index') }}">Nilai</a>
                         </li>
                         <li class="nav-item"> <a class="nav-link" href="{{ route('skala.index') }}">Skala</a>
                         </li>

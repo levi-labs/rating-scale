@@ -2,10 +2,22 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
+            @if (session()->has('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session()->has('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">{{ $title }}</h4>
-                    <a href="{{ route('indikator.create') }}" class="btn btn-info btn-rounded btn-fw">Tambah</a>
+                    <a href="{{ route('nilai.create') }}" class="btn btn-info btn-rounded btn-fw">Tambah</a>
                     <div class="table-responsive pt-3">
                         <table class="table table-bordered text-center">
                             <thead>
@@ -14,16 +26,17 @@
                                         #
                                     </th>
                                     <th>
-                                        Kriteria
+                                        Nama Pegawai
                                     </th>
                                     <th>
                                         Indikator
                                     </th>
+
                                     <th>
-                                        Bobot
+                                        Nilai
                                     </th>
                                     <th>
-                                        Nilai Pembanding
+                                        Tanggal
                                     </th>
                                     <th>
                                         Options
@@ -37,22 +50,23 @@
                                             {{ $loop->iteration }}
                                         </td>
                                         <td>
-                                            {{ $dt->kriteria->nama }}
-                                        </td>
-                                        <td>
-                                            {{ $dt->nama }}
+                                            {{ $dt->pegawais->nama_lengkap }}
                                         </td>
 
                                         <td>
-                                            {{ $dt->bobot }}
+                                            {{ $dt->indikators->nama }}
+                                        </td>
+
+                                        <td>
+                                            {{ $dt->nilai_hasil }}
                                         </td>
                                         <td>
-                                            {{ $dt->nilai_pembanding }}
+                                            {{ $dt->tanggal_nilai }}
                                         </td>
                                         <td>
-                                            <a href="{{ route('indikator.edit', $dt->id) }}"
+                                            <a href="{{ route('nilai.edit', $dt->id) }}"
                                                 class="btn btn-outline-warning btn-fw btn-sm">Edit</a>
-                                            <form action="{{ route('indikator.delete', $dt->id) }}" method="POST"
+                                            <form action="{{ route('nilai.delete', $dt->id) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
