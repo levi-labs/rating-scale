@@ -5,8 +5,8 @@
             <div class="d-flex justify-content-between flex-wrap">
                 <div class="d-flex align-items-end flex-wrap">
                     <div class="me-md-3 me-xl-5">
-                        <h2>Welcome back,</h2>
-                        <p class="mb-md-0">Your analytics dashboard template.</p>
+                        <h2>Welcome back, {{ Auth::guard('web')->user()->nama }} </h2>
+                        {{-- <p class="mb-md-0">Your analytics dashboard template.</p> --}}
                     </div>
 
                 </div>
@@ -33,29 +33,29 @@
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <div class="card-body pb-0">
-                                <p class="card-title text-white">Downloads</p>
-                                <h1>8543</h1>
-                                <h4>Growth 58%</h4>
+                                <p class="card-title text-white">Pegawai</p>
+                                <h1>{{ $pegawai }}</h1>
+                                {{-- <h4>Growth 58%</h4> --}}
                             </div>
                             <canvas height="110" id="downloads-chart-a"></canvas>
                         </div>
-                        <div class="carousel-item">
+                        {{-- <div class="carousel-item">
                             <div class="card-body pb-0">
                                 <p class="card-title text-white">Uploads</p>
                                 <h1>4533</h1>
-                                <h4>Growth 32%</h4>
+                              
                             </div>
                             <canvas height="110" id="downloads-chart-b"></canvas>
-                        </div>
+                        </div> --}}
                     </div>
-                    <a class="carousel-control-prev control-light" href="#downloads-carousel" role="button"
+                    {{-- <a class="carousel-control-prev control-light" href="#downloads-carousel" role="button"
                         data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     </a>
                     <a class="carousel-control-next control-light" href="#downloads-carousel" role="button"
                         data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </a>
+                    </a> --}}
                 </div>
             </div>
         </div>
@@ -65,29 +65,29 @@
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <div class="card-body pb-0">
-                                <p class="card-title text-white">feedbacks</p>
-                                <h1>3568</h1>
-                                <h4>Growth 12%</h4>
+                                <p class="card-title text-white">Kriteria</p>
+                                <h1>{{ $kriteria }}</h1>
+                                {{-- <h4>Growth 12%</h4> --}}
                             </div>
                             <canvas height="110" id="feedbacks-chart-a"></canvas>
                         </div>
-                        <div class="carousel-item">
+                        {{-- <div class="carousel-item">
                             <div class="card-body pb-0">
                                 <p class="card-title text-white">feedbacks</p>
                                 <h1>8290</h1>
                                 <h4>Growth 11%</h4>
                             </div>
                             <canvas height="110" id="feedbacks-chart-b"></canvas>
-                        </div>
+                        </div> --}}
                     </div>
-                    <a class="carousel-control-prev control-light" href="#feedbacks-carousel" role="button"
+                    {{-- <a class="carousel-control-prev control-light" href="#feedbacks-carousel" role="button"
                         data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     </a>
                     <a class="carousel-control-next control-light" href="#feedbacks-carousel" role="button"
                         data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </a>
+                    </a> --}}
                 </div>
             </div>
         </div>
@@ -97,29 +97,29 @@
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <div class="card-body pb-0">
-                                <p class="card-title text-white">customers</p>
-                                <h1>4567</h1>
-                                <h4>Growth 31%</h4>
+                                <p class="card-title text-white">Indikator</p>
+                                <h1>{{ $indikator }}</h1>
+                                {{-- <h4>Growth 31%</h4> --}}
                             </div>
                             <canvas height="110" id="customers-chart-a"></canvas>
                         </div>
-                        <div class="carousel-item">
+                        {{-- <div class="carousel-item">
                             <div class="card-body pb-0">
                                 <p class="card-title text-white">Users</p>
                                 <h1>1782</h1>
                                 <h4>Growth 62%</h4>
                             </div>
                             <canvas height="110" id="customers-chart-b"></canvas>
-                        </div>
+                        </div> --}}
                     </div>
-                    <a class="carousel-control-prev control-light" href="#customers-carousel" role="button"
+                    {{-- <a class="carousel-control-prev control-light" href="#customers-carousel" role="button"
                         data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     </a>
                     <a class="carousel-control-next control-light" href="#customers-carousel" role="button"
                         data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </a>
+                    </a> --}}
                 </div>
             </div>
         </div>

@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Pegawai;
+use App\Models\Kriteria;
+use App\Models\Indikator;
 
 class DashboardController extends Controller
 {
@@ -11,7 +15,12 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('pages.dashboard.index');
+        $data_user = Auth::guard('web')->user()->email;
+        $pegawai    = Pegawai::count();
+        $kriteria   = Kriteria::count();
+        $indikator  = Indikator::count();
+
+        return view('pages.dashboard.index', compact('data_user', 'pegawai', 'kriteria', 'indikator'));
     }
 
     /**

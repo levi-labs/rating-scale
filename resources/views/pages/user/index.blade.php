@@ -2,19 +2,40 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
+            @if (session()->has('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session()->has('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">{{ $title }}</h4>
-                    <a href="{{ route('kriteria.create') }}" class="btn btn-info btn-rounded btn-fw">Tambah</a>
+                    <a href="{{ route('user.create') }}" class="btn btn-info btn-rounded btn-fw">Tambah</a>
                     <div class="table-responsive pt-3">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered text-center">
                             <thead>
                                 <tr>
                                     <th>
                                         #
                                     </th>
                                     <th>
-                                        Kriteria
+                                        Username
+                                    </th>
+                                    <th>
+                                        Nama
+                                    </th>
+                                    <th>
+                                        Akses Level
+                                    </th>
+                                    <th>
+                                        Email
                                     </th>
                                     <th>
                                         Options
@@ -28,12 +49,24 @@
                                             {{ $loop->iteration }}
                                         </td>
                                         <td>
+                                            {{ $dt->username }}
+                                        </td>
+
+                                        <td>
                                             {{ $dt->nama }}
                                         </td>
                                         <td>
-                                            <a href="{{ route('kriteria.edit', $dt->id) }}"
+                                            {{ $dt->akses_level }}
+                                        </td>
+                                        <td>
+                                            {{ $dt->email }}
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('user.resetpassword', $dt->id) }}"
+                                                class="btn btn-outline-success btn-fw btn-sm">Reset Password</a>
+                                            <a href="{{ route('user.edit', $dt->id) }}"
                                                 class="btn btn-outline-warning btn-fw btn-sm">Edit</a>
-                                            <form action="{{ route('kriteria.delete', $dt->id) }}" method="POST"
+                                            <form action="{{ route('user.delete', $dt->id) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
@@ -44,7 +77,6 @@
 
                                     </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
                     </div>

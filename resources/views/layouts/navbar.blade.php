@@ -13,21 +13,9 @@
         </div>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-        <ul class="navbar-nav me-lg-4 w-100">
-            <li class="nav-item nav-search d-none d-lg-block w-100">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="search">
-                            <i class="mdi mdi-magnify"></i>
-                        </span>
-                    </div>
-                    <input type="text" class="form-control" placeholder="Search now" aria-label="search"
-                        aria-describedby="search">
-                </div>
-            </li>
-        </ul>
+
         <ul class="navbar-nav navbar-nav-right">
-            <li class="nav-item dropdown me-1">
+            {{-- <li class="nav-item dropdown me-1">
                 <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center"
                     id="messageDropdown" href="#" data-bs-toggle="dropdown">
                     <i class="mdi mdi-message-text mx-0"></i>
@@ -73,8 +61,8 @@
                         </div>
                     </a>
                 </div>
-            </li>
-            <li class="nav-item dropdown me-4">
+            </li> --}}
+            {{-- <li class="nav-item dropdown me-4">
                 <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center notification-dropdown"
                     id="notificationDropdown" href="#" data-bs-toggle="dropdown">
                     <i class="mdi mdi-bell mx-0"></i>
@@ -123,11 +111,11 @@
                         </div>
                     </a>
                 </div>
-            </li>
+            </li> --}}
             <li class="nav-item nav-profile dropdown">
                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-                    <img src="../../../assets/images/faces/face5.jpg" alt="profile" />
-                    <span class="nav-profile-name">Louis Barnett</span>
+                    {{-- <img src="../../../assets/images/faces/face5.jpg" alt="profile" /> --}}
+                    <span class="nav-profile-name">{{ Auth::guard('web')->user()->nama }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                     <a class="dropdown-item">
@@ -140,11 +128,11 @@
                     </a>
                 </div>
             </li>
-            <li class="nav-item nav-settings d-none d-lg-flex">
+            {{-- <li class="nav-item nav-settings d-none d-lg-flex">
                 <a class="nav-link" href="#">
                     <i class="mdi mdi-apps"></i>
                 </a>
-            </li>
+            </li> --}}
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
             data-toggle="offcanvas">

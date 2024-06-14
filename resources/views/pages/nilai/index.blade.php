@@ -18,6 +18,22 @@
                 <div class="card-body">
                     <h4 class="card-title">{{ $title }}</h4>
                     <a href="{{ route('nilai.create') }}" class="btn btn-info btn-rounded btn-fw">Tambah</a>
+                    <div class="row justify-content-end">
+                        <div class="col-md-4 ">
+                            <form action="{{ route('nilai.index') }}" method="GET">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="month" class="form-control form-control-sm" name="search">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-dark" type="submit">Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
                     <div class="table-responsive pt-3">
                         <table class="table table-bordered text-center">
                             <thead>
@@ -25,16 +41,7 @@
                                     <th>
                                         #
                                     </th>
-                                    <th>
-                                        Nama Pegawai
-                                    </th>
-                                    <th>
-                                        Indikator
-                                    </th>
 
-                                    <th>
-                                        Nilai
-                                    </th>
                                     <th>
                                         Tanggal
                                     </th>
@@ -50,28 +57,19 @@
                                             {{ $loop->iteration }}
                                         </td>
                                         <td>
-                                            {{ $dt->pegawais->nama_lengkap }}
-                                        </td>
-
-                                        <td>
-                                            {{ $dt->indikators->nama }}
-                                        </td>
-
-                                        <td>
-                                            {{ $dt->nilai_hasil }}
-                                        </td>
-                                        <td>
                                             {{ $dt->tanggal_nilai }}
                                         </td>
                                         <td>
-                                            <a href="{{ route('nilai.edit', $dt->id) }}"
-                                                class="btn btn-outline-warning btn-fw btn-sm">Edit</a>
-                                            <form action="{{ route('nilai.delete', $dt->id) }}" method="POST"
+                                            <a href="{{ route('nilai.show', $dt->tanggal_nilai) }}"
+                                                class="btn btn-outline-success btn-fw btn-sm">Show</a>
+                                            {{-- <a href="{{ route('nilai.edit', $dt->tanggal_nilai) }}"
+                                                class="btn btn-outline-warning btn-fw btn-sm">Edit</a> --}}
+                                            {{-- <form action="{{ route('nilai.delete', $dt->tanggal_nilai) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-                                            </form>
+                                            </form> --}}
 
                                         </td>
 

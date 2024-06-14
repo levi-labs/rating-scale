@@ -12,6 +12,7 @@ class Nilai extends Model
     protected $table = 'nilai';
     protected $guarded = ['id'];
 
+
     public function indikators()
     {
         return $this->belongsTo(Indikator::class, 'indikator_id', 'id');
