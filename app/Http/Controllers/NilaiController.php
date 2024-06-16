@@ -33,21 +33,34 @@ class NilaiController extends Controller
      */
     public function create()
     {
+        $title      = 'Input Nilai Pegawai';
         try {
-            $tanggal = null;
+            $indikator  = Indikator::all();
             if (session()->has('tanggal')) {
-                $tanggal    = session()->get('tanggal');
+                $pegawai = DB::table('pegawai')
+                    ->select('*')
+                    ->whereNotIn('id', function ($query) {
+                        $tanggal = session()->get('tanggal');
+                        $year = date('Y', strtotime($tanggal));
+                        $month = date('m', strtotime($tanggal));
+                        $query->select('pegawai_id')
+                            ->from('nilai')
+                            ->whereRaw("YEAR(tanggal_nilai) = ? AND MONTH(tanggal_nilai) = ?", [$year, $month]);
+                    })
+                    ->get();
+            } else {
+                $pegawai = DB::table('pegawai')
+                    ->select('*')
+                    ->whereNotIn('id', function ($query) {
+                        $query->select('pegawai_id')
+                            ->from('nilai')
+                            ->whereRaw('YEAR(tanggal_nilai) = YEAR(CURDATE())')
+                            ->whereRaw('MONTH(tanggal_nilai) = MONTH(CURDATE())');
+                    })
+                    ->get();
             }
 
-            $title      = 'Input Nilai Pegawai';
-            $pegawai    = DB::table('pegawai')->select('*')
-                ->whereNotIn('id', function ($query) {
-                    $query->select('pegawai_id')
-                        ->where('tanggal_nilai', session()->get('tanggal'))
-                        ->from('nilai');
-                })->get();
 
-            $indikator  = Indikator::all();
             return view('pages.nilai.create', compact('title', 'indikator', 'pegawai'));
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());

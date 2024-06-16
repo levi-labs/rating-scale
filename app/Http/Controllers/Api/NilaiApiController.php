@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Indikator;
 use App\Models\Nilai;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -29,9 +30,26 @@ class NilaiApiController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+
+
     public function create()
     {
-        //
+        try {
+            $pegawai    = DB::table('pegawai')->select('*')
+                ->whereNotIn('id', function ($query) {
+                    $query->select('pegawai_id')
+                        ->where('tanggal_nilai', session()->get('tanggal'))
+                        ->from('nilai');
+                })->get();
+
+            $indikator  = Indikator::all();
+
+            return response()->json(['pegawai' => $pegawai, 'indikator' => $indikator], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
