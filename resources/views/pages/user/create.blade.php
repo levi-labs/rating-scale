@@ -6,13 +6,18 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">{{ $title }}</h4>
+                    @if (session()->has('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
 
-                    <form class="forms-sample" action="{{ route('pegawai.store') }}" method="POST">
+                    <form class="forms-sample" action="{{ route('user.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="nip">Username</label>
-                            <input type="text" class="form-control" id="nip" placeholder="JohnDoe" name="username">
-                            @error('nip')
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" placeholder="JohnDoe" name="username">
+                            @error('username')
                                 <span class="text-danger text-sm">{{ $message }}</span>
                             @enderror
                         </div>
@@ -29,8 +34,8 @@
                             <label for="akses_level">Akses Level</label>
                             <select class="form-control form-control-lg" id="akses_level" name="akses_level">
                                 <option disabled selected>Pilih Akses Level</option>
-                                <option value="1">Administrator</option>
-                                <option value="2">Staf</option>
+                                <option value="admin">Administrator</option>
+                                <option value="staf">Staf</option>
                             </select>
                             @error('akses_level')
                                 <span class="text-danger text-sm">{{ $message }}</span>

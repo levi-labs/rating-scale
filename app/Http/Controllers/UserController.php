@@ -36,20 +36,20 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'nama' => 'required',
             'username' => 'required|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8|max:255',
-            'role' => 'required',
+            'akses_level' => 'required',
         ]);
         try {
 
             User::create($request->all());
 
-            return back()->with('success', 'User has been created');
+            return redirect()->route('user.index')->with('success', 'User has been created');
         } catch (\Exception $th) {
 
-            return back()->with('error', $th->getMessage());
+            return redirect()->route('user.index')->with('error', $th->getMessage());
         }
     }
 
@@ -66,7 +66,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $title = 'Edit User Page';
+
+        return view('pages.user.edit', compact('title', 'user'));
     }
 
     /**
@@ -74,7 +76,26 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'nama' => 'required',
+            'username' => 'required',
+            'email' => 'required|email',
+            'akses_level' => 'required',
+        ]);
+        try {
+            if ($user->username != $request->username && $user->email != $request->email) {
+                $request->validate([
+                    'username' => 'required|unique:users',
+                    'email' => 'required|email|unique:users',
+                ]);
+            }
+            $user->update($request->all());
+
+            return redirect()->route('user.index')->with('success', 'User has been updated');
+        } catch (\Exception $th) {
+
+            return back()->with('error', $th->getMessage());
+        }
     }
 
     /**
