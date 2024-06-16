@@ -35,14 +35,30 @@ class NilaiApiController extends Controller
     public function create()
     {
         try {
-            $pegawai    = DB::table('pegawai')->select('*')
-                ->whereNotIn('id', function ($query) {
-                    $query->select('pegawai_id')
-                        ->where('tanggal_nilai', session()->get('tanggal'))
-                        ->from('nilai');
-                })->get();
-
-            $indikator  = Indikator::all();
+            $indikator  = Indikator::with('kriteria')->select('id', 'nama', 'bobot', 'nilai_pembanding', 'kriteria_id')->get();
+            if (session()->has('tanggal')) {
+                $pegawai = DB::table('pegawai')
+                    ->select('*')
+                    ->whereNotIn('id', function ($query) {
+                        $tanggal = session()->get('tanggal');
+                        $year = date('Y', strtotime($tanggal));
+                        $month = date('m', strtotime($tanggal));
+                        $query->select('pegawai_id')
+                            ->from('nilai')
+                            ->whereRaw("YEAR(tanggal_nilai) = ? AND MONTH(tanggal_nilai) = ?", [$year, $month]);
+                    })
+                    ->get();
+            } else {
+                $pegawai = DB::table('pegawai')
+                    ->select('*')
+                    ->whereNotIn('id', function ($query) {
+                        $query->select('pegawai_id')
+                            ->from('nilai')
+                            ->whereRaw('YEAR(tanggal_nilai) = YEAR(CURDATE())')
+                            ->whereRaw('MONTH(tanggal_nilai) = MONTH(CURDATE())');
+                    })
+                    ->get();
+            }
 
             return response()->json(['pegawai' => $pegawai, 'indikator' => $indikator], 200);
         } catch (\Exception $e) {
