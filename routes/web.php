@@ -7,6 +7,7 @@ use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\SkalaController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -95,3 +96,9 @@ Route::group(['middleware' => 'auth:web'], function () {
         Route::delete('/delete/{user}', 'destroy')->name('user.delete');
     });
 });
+
+Route::get('/logout', function () {
+    Auth::guard('web')->logout();
+
+    return redirect()->route('login');
+})->name('logout');

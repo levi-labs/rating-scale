@@ -122,7 +122,7 @@
                         <i class="mdi mdi-cog text-primary"></i>
                         Settings
                     </a>
-                    <a class="dropdown-item">
+                    <a class="dropdown-item" href="{{ route('logout') }}">
                         <i class="mdi mdi-logout text-primary"></i>
                         Logout
                     </a>
