@@ -54,6 +54,13 @@ Route::group(['middleware' => ['jwt.verify']], function ($router) {
         Route::put('/{id}', 'update');
         Route::delete('/{id}', 'destroy');
     });
+    Route::controller(App\Http\Controllers\Api\NilaiApiController::class)->prefix('nilai')->group(function () {
+        Route::get('/', 'index');
+        Route::get('/{id}', 'show');
+        Route::post('/', 'store');
+        Route::put('/{id}', 'update');
+        Route::delete('/{id}', 'destroy');
+    });
 
 
 
