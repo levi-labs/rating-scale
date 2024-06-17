@@ -32,15 +32,17 @@ class NilaiApiController extends Controller
      */
 
 
-    public function create()
+    public function create($tanggal = null)
     {
         try {
-            $indikator  = Indikator::with('kriteria')->select('id', 'nama', 'bobot', 'nilai_pembanding', 'kriteria_id')->get();
-            if (session()->has('tanggal')) {
+            $indikator  = Indikator::query()->with(['kriteria' => function ($query) {
+                $query->select('id', 'nama');
+            }])->select('id', 'nama', 'bobot', 'nilai_pembanding', 'kriteria_id')->get();
+            if ($tanggal != null) {
                 $pegawai = DB::table('pegawai')
                     ->select('*')
-                    ->whereNotIn('id', function ($query) {
-                        $tanggal = session()->get('tanggal');
+                    ->whereNotIn('id', function ($query) use ($tanggal) {
+
                         $year = date('Y', strtotime($tanggal));
                         $month = date('m', strtotime($tanggal));
                         $query->select('pegawai_id')
