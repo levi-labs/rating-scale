@@ -58,7 +58,7 @@ Route::group(['middleware' => ['jwt.verify']], function ($router) {
         Route::get('/', 'index');
         Route::get('/create/{tanggal?}', 'create');
         Route::get('/{id}', 'show');
-        Route::post('/', 'store');
+        Route::post('/post', 'store');
         Route::put('/{id}', 'update');
         Route::delete('/{id}', 'destroy');
     });

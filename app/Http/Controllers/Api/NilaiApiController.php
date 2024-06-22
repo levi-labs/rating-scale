@@ -8,6 +8,7 @@ use App\Models\Nilai;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class NilaiApiController extends Controller
 {
@@ -17,8 +18,11 @@ class NilaiApiController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $data = DB::table('nilai')->select('tanggal_nilai')->groupBy('tanggal_nilai')->get();
-
+            // $data = DB::table('nilai')->select('tanggal_nilai')->groupBy('tanggal_nilai')->get();
+            $data = DB::table('nilai')
+                ->select(DB::raw('DATE_FORMAT(tanggal_nilai, "%Y-%m") as tanggal_nilai'))
+                ->groupBy(DB::raw('DATE_FORMAT(tanggal_nilai, "%Y-%m")'))
+                ->get();
             return response()->json($data, 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -37,12 +41,13 @@ class NilaiApiController extends Controller
         try {
             $indikator  = Indikator::query()->with(['kriteria' => function ($query) {
                 $query->select('id', 'nama');
-            }])->select('id', 'nama', 'bobot', 'nilai_pembanding', 'kriteria_id')->get();
+            }])
+                ->select('id', 'nama', 'bobot', 'nilai_pembanding', 'kriteria_id')
+                ->get();
             if ($tanggal != null) {
                 $pegawai = DB::table('pegawai')
                     ->select('*')
                     ->whereNotIn('id', function ($query) use ($tanggal) {
-
                         $year = date('Y', strtotime($tanggal));
                         $month = date('m', strtotime($tanggal));
                         $query->select('pegawai_id')
@@ -51,6 +56,7 @@ class NilaiApiController extends Controller
                     })
                     ->get();
             } else {
+                $tanggal = date('Y-m-d');
                 $pegawai = DB::table('pegawai')
                     ->select('*')
                     ->whereNotIn('id', function ($query) {
@@ -61,8 +67,12 @@ class NilaiApiController extends Controller
                     })
                     ->get();
             }
-
-            return response()->json(['pegawai' => $pegawai, 'indikator' => $indikator], 200);
+            $data = [
+                'indikator' => $indikator,
+                'pegawai' => $pegawai,
+                'tanggal_nilai' => $tanggal,
+            ];
+            return response()->json($data, 200);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -75,7 +85,52 @@ class NilaiApiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'indikator_id' => 'required',
+            'pegawai_id' => 'required',
+            'nilai_input' => 'required',
+            'tanggal_nilai' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()
+            ], 400);
+        }
+
+        try {
+            $indikator_id   = $request->indikator_id;
+            $pegawai_id     = $request->pegawai_id;
+            $nilai_input    = $request->nilai_input;
+            $tanggal        = $request->tanggal_nilai;
+            $date           = date('Y-m');
+
+            if ($tanggal != null) {
+                $year = date('Y', strtotime($tanggal));
+                $month = date('m', strtotime($tanggal));
+                $get_last_row = DB::table('nilai')
+                    ->select('tanggal_nilai')
+                    ->whereRaw("YEAR(tanggal_nilai) = ? AND MONTH(tanggal_nilai) = ?", [$year, $month])
+                    ->get()
+                    ->last();
+                dd($tanggal, $get_last_row);
+            } else {
+            }
+
+
+            // dd(json_decode($indikator_id, true), $pegawai_id, $nilai_input);
+            return response()->json([
+                'message' => 'Data Berhasil Ditambahkan',
+                'indikator_id' => $indikator_id,
+                'pegawai_id' => $pegawai_id,
+                'nilai_input' => $nilai_input,
+                'tanggal' => $tanggal
+            ], 200);
+        } catch (\Exception $th) {
+            return response()->json([
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 
     /**
