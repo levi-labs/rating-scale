@@ -25,8 +25,23 @@
                 <div class="row w-100 mx-0">
                     <div class="col-lg-4 mx-auto">
                         <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+                            <style>
+                                .brand-logo {
+
+                                    padding: 0 !important;
+                                    text-align: center;
+
+                                }
+
+                                img.my-logo {
+                                    text-align: center !important;
+                                    height: 100% !important;
+                                    width: 100% !important;
+                                }
+                            </style>
                             <div class="brand-logo">
-                                <img src="../../assets/images/logo.svg" alt="logo">
+                                <img class="my-logo" src="{{ asset('assets/logo/fatima-logo-inti.png') }}"
+                                    alt="logo">
                             </div>
                             <div class="text-center">
                                 <h4>Sistem Informasi Penilaian Kinerja</h4>

@@ -44,9 +44,9 @@
                                             {{ $dt->keterangan }}
                                         </td>
                                         <td>
-                                            <a href="{{ route('kriteria.edit', $dt->id) }}"
+                                            <a href="{{ route('skala.edit', $dt->id) }}"
                                                 class="btn btn-outline-warning btn-fw btn-sm">Edit</a>
-                                            <form action="{{ route('kriteria.delete', $dt->id) }}" method="POST"
+                                            <form action="{{ route('skala.delete', $dt->id) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
                                                 @method('DELETE')

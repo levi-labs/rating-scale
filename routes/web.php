@@ -93,6 +93,8 @@ Route::group(['middleware' => 'auth:web'], function () {
         Route::get('/edit/{user}', 'edit')->name('user.edit');
         Route::put('/update/{user}', 'update')->name('user.update');
         Route::get('/resetPassword/{user}', 'resetPassword')->name('user.resetpassword');
+        Route::get('/editPassword', 'viewFormChangePassword')->name('user.changepassword');
+        Route::put('/updatePassword/{user}', 'changePassword')->name('user.updatepassword');
         Route::delete('/delete/{user}', 'destroy')->name('user.delete');
     });
 });

@@ -1,12 +1,18 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
-            <a class="navbar-brand brand-logo" href="index.html"><img src="../../../assets/images/logo.svg"
+            <style>
+                a.my-logo img {
+                    height: 100% !important;
+                    width: 100% !important;
+                }
+            </style>
+            <a class="navbar-brand my-logo" href="/dashboard"><img src="{{ asset('assets/logo/fatima-logo.png') }}"
                     alt="logo" /></a>
-            <a class="navbar-brand brand-logo-white" href="index.html"><img src="../../../assets/images/logo-white.svg"
+            {{-- <a class="navbar-brand brand-logo-white" href="index.html"><img src="../../../assets/images/logo-white.svg"
                     alt="logo" /></a>
             <a class="navbar-brand brand-logo-mini" href="index.html"><img src="../../../assets/images/logo-mini.svg"
-                    alt="logo" /></a>
+                    alt="logo" /></a> --}}
             <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                 <span class="mdi mdi-sort-variant"></span>
             </button>
@@ -118,7 +124,7 @@
                     <span class="nav-profile-name">{{ Auth::guard('web')->user()->nama }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                    <a class="dropdown-item">
+                    <a href="{{ route('user.changepassword') }}" class="dropdown-item">
                         <i class="mdi mdi-cog text-primary"></i>
                         Settings
                     </a>

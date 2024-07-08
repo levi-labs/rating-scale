@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -125,17 +126,28 @@ class UserController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
+    public function viewFormChangePassword()
+    {
+        $title = 'Change Password Page';
 
-    public function changePassword(Request $request, User $user)
+        return view('pages.password.change-password', compact('title'));
+    }
+
+    public function changePassword(Request $request)
     {
         $request->validate([
-            'password' => 'required|min:8|max:255',
+            'old_password' => 'required',
+            'new_password' => 'required|min:6|max:255',
         ]);
 
         try {
-            $user->password = bcrypt($request->password);
-            $user->save();
-
+            $user = User::find(Auth::user()->id);
+            if (!Hash::check($request->old_password, $user->password)) {
+                return back()->with('error', 'Old password does not match');
+            } else {
+                $user->password = bcrypt($request->new_password);
+                $user->save();
+            }
             return back()->with('success', 'User password has been changed');
         } catch (\Exception $th) {
             return back()->with('error', $th->getMessage());

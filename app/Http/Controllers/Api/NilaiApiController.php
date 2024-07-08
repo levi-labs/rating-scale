@@ -31,6 +31,29 @@ class NilaiApiController extends Controller
         }
     }
 
+    public function listNilaiByDate($date)
+    {
+        try {
+            $data = DB::table('pegawai')
+                ->join('nilai', 'pegawai.id', '=', 'nilai.pegawai_id')
+                ->select(
+                    'pegawai.id',
+                    'pegawai.nama_lengkap',
+                    'nilai.tanggal_nilai',
+                    DB::raw('SUM(nilai.nilai_hasil) as total_nilai')
+                )
+                ->whereYear('tanggal_nilai', '=', date('Y', strtotime($date)))
+                ->whereMonth('tanggal_nilai', '=', date('m', strtotime($date)))
+                ->groupBy('pegawai_id', 'tanggal_nilai')
+                ->get();
+            return response()->json($data, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */

@@ -17,13 +17,22 @@ class NilaiController extends Controller
     {
         session()->forget('tanggal');
         $title = 'Nilai Pegawai';
+        $searchValue = $request->search;
+        $year = date('Y', strtotime($searchValue));
+        $month = date('m', strtotime($searchValue));
         if ($request->search) {
-            $data = DB::table('nilai')->select('tanggal_nilai')
-                ->where('tanggal_nilai', 'like', '%' . $request->search . '%')
-                ->groupBy('tanggal_nilai')->get();
+            $data = DB::table('nilai')
+                ->select(DB::raw('DATE_FORMAT(tanggal_nilai, "%Y-%m") as tanggal_nilai'))
+                ->whereYear('tanggal_nilai', '=', $year)
+                ->whereMonth('tanggal_nilai', '=', $month)
+                ->groupBy(DB::raw('DATE_FORMAT(tanggal_nilai, "%Y-%m")'))
+                ->get();
             return view('pages.nilai.index', compact('data', 'title'));
         } else {
-            $data = DB::table('nilai')->select('tanggal_nilai')->groupBy('tanggal_nilai')->get();
+            $data = DB::table('nilai')
+                ->select(DB::raw('DATE_FORMAT(tanggal_nilai, "%Y-%m") as tanggal_nilai'))
+                ->groupBy(DB::raw('DATE_FORMAT(tanggal_nilai, "%Y-%m")'))
+                ->get();
             return view('pages.nilai.index', compact('data', 'title'));
         }
     }
@@ -113,15 +122,22 @@ class NilaiController extends Controller
     {
         $sessionTanggal = session()->put('tanggal', $tanggal);
         $title = 'Nilai Pegawai';
+        $explode = explode('-', $tanggal);
+        $year = $explode[0];
+        $month = $explode[1];
+        $searchValue = $tanggal;
+        $year = date('Y', strtotime($searchValue));
+        $month = date('m', strtotime($searchValue));
         $data = DB::table('pegawai')
             ->join('nilai', 'pegawai.id', '=', 'nilai.pegawai_id')
             ->select(
                 'pegawai.id',
                 'pegawai.nama_lengkap',
-                'nilai.tanggal_nilai',
+                DB::raw('DATE_FORMAT(tanggal_nilai, "%Y-%m") as tanggal_nilai'),
                 DB::raw('SUM(nilai.nilai_hasil) as total_nilai')
             )
-            ->where('tanggal_nilai', $tanggal)
+            ->whereYear('tanggal_nilai', $year)
+            ->whereMonth('tanggal_nilai', $month)
             ->groupBy('pegawai_id', 'tanggal_nilai')
             ->get();
 
@@ -132,6 +148,10 @@ class NilaiController extends Controller
     {
 
         $title = 'Nilai Detail Pegawai';
+        $date = session()->get('tanggal');
+        $explode = explode('-', $date);
+        $year = $explode[0];
+        $month = $explode[1];
 
         try {
             $tanggal = session()->get('tanggal');
@@ -142,14 +162,15 @@ class NilaiController extends Controller
                 ->select(
                     'pegawai.id',
                     'pegawai.nama_lengkap',
-                    'nilai.tanggal_nilai',
                     'nilai.nilai_indikator',
                     'nilai.nilai_hasil',
-                    'indikators.nama as indikator'
+                    'indikators.nama as indikator',
+                    DB::raw('DATE_FORMAT(tanggal_nilai, "%Y-%m") as tanggal_nilai'),
                     // DB::raw('SUM(nilai.nilai_hasil) as total_nilai')
                 )
                 ->where('pegawai_id', $id)
-                ->where('tanggal_nilai', session()->get('tanggal'))
+                ->whereYear('tanggal_nilai', $year)
+                ->whereMonth('tanggal_nilai', $month)
                 ->get();
 
 
@@ -167,15 +188,26 @@ class NilaiController extends Controller
     {
         // dd($nilai->pegawai_id);
         $tanggal = session()->get('tanggal');
+        $resultDate = $this->generateDateYearAndMonth($tanggal);
+
+
         $title = 'Edit Nilai';
 
 
         try {
             $pegawai = DB::table('pegawai')->get();
             $indikator = Indikator::all();
-            $nilais = Nilai::where('tanggal_nilai', $tanggal)
+            $nilais = Nilai::select(
+                'pegawai_id',
+                'indikator_id',
+                'nilai_indikator',
+                DB::raw('DATE_FORMAT(tanggal_nilai, "%Y-%m") as tanggal_nilai'),
+            )
+                ->whereYear('tanggal_nilai', $resultDate[0])
+                ->whereMonth('tanggal_nilai', $resultDate[1])
                 ->where('pegawai_id', $nilai->pegawai_id)
                 ->get();
+
 
             return view('pages.nilai.edit', compact('title', 'nilai', 'pegawai', 'indikator', 'nilais'));
         } catch (\Exception $e) {
@@ -233,5 +265,12 @@ class NilaiController extends Controller
         } catch (\Exception $th) {
             return back()->with('error', $th->getMessage());
         }
+    }
+
+    protected function generateDateYearAndMonth($date)
+    {
+        $year = explode('-', $date)[0];
+        $month = explode('-', $date)[1];
+        return [$year, $month];
     }
 }

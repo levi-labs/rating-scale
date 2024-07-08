@@ -23,7 +23,9 @@
                 </div>
                 @endif
                 <a href="{{ route('nilai.index') }}" class="btn btn-secondary btn-rounded btn-fw">Kembali</a>
-                <a href="{{ route('nilai.create') }}" class="btn btn-info btn-rounded btn-fw">Tambah</a>
+                @if (Auth()->guard('web')->user()->akses_level == 'staf')
+                    <a href="{{ route('nilai.create') }}" class="btn btn-info btn-rounded btn-fw">Tambah</a>
+                @endif
                 <div class="table-responsive pt-3">
                     <table class="table table-bordered text-center">
                         <thead>
@@ -38,6 +40,7 @@
                                 <th>
                                     Total Nilai
                                 </th>
+
                                 <th>
                                     Options
                                 </th>
@@ -91,14 +94,17 @@
                                     <td>
                                         <a href="{{ route('nilai.detail', $dt->id) }}"
                                             class="btn btn-outline-success btn-fw btn-sm">Detail</a>
-                                        <a href="{{ route('nilai.edit', $dt->id) }}"
-                                            class="btn btn-outline-warning btn-fw btn-sm">Edit</a>
-                                        <form action="{{ route('nilai.delete', $dt->tanggal_nilai) }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-                                        </form>
+                                        @if (Auth()->guard('web')->user()->akses_level == 'staf')
+                                            <a href="{{ route('nilai.edit', $dt->id) }}"
+                                                class="btn btn-outline-warning btn-fw btn-sm">Edit</a>
+                                            <form action="{{ route('nilai.delete', $dt->tanggal_nilai) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                            </form>
+                                        @endif
+
 
                                     </td>
 

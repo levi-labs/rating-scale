@@ -17,7 +17,9 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">{{ $title }}</h4>
-                    <a href="{{ route('pegawai.create') }}" class="btn btn-info btn-rounded btn-fw">Tambah</a>
+                    @if (Auth()->guard('web')->user()->akses_level == 'staf')
+                        <a href="{{ route('pegawai.create') }}" class="btn btn-info btn-rounded btn-fw">Tambah</a>
+                    @endif
                     <div class="table-responsive pt-3">
                         <table class="table table-bordered text-center">
                             <thead>
@@ -37,9 +39,12 @@
                                     <th>
                                         Email
                                     </th>
-                                    <th>
-                                        Options
-                                    </th>
+                                    @if (Auth()->guard('web')->user()->akses_level == 'staf')
+                                        <th>
+                                            Options
+                                        </th>
+                                    @endif
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,18 +66,19 @@
                                         <td>
                                             {{ $dt->email }}
                                         </td>
-                                        <td>
-                                            <a href="{{ route('pegawai.edit', $dt->id) }}"
-                                                class="btn btn-outline-warning btn-fw btn-sm">Edit</a>
-                                            <form action="{{ route('pegawai.delete', $dt->id) }}" method="POST"
-                                                class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-                                            </form>
-
-                                        </td>
-
+                                        @if (Auth()->guard('web')->user()->akses_level == 'staf')
+                                            <td>
+                                                <a href="{{ route('pegawai.edit', $dt->id) }}"
+                                                    class="btn btn-outline-warning btn-fw btn-sm">Edit</a>
+                                                <form action="{{ route('pegawai.delete', $dt->id) }}" method="POST"
+                                                    class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        class="btn btn-outline-danger btn-sm">Delete</button>
+                                                </form>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

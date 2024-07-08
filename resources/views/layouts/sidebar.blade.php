@@ -17,26 +17,35 @@
                 </a>
                 <div class="collapse" id="ui-basic">
                     <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"> <a class="nav-link" href="{{ route('kriteria.index') }}">Kriteria</a>
-                        </li>
-                        <li class="nav-item"> <a class="nav-link" href="{{ route('indikator.index') }}">Indikator</a>
-                        </li>
-                        <li class="nav-item"> <a class="nav-link" href="{{ route('pegawai.index') }}">Pegawai</a>
-                        </li>
-                        <li class="nav-item"> <a class="nav-link" href="{{ route('skala.index') }}">Skala</a>
-                        </li>
-                        <li class="nav-item"> <a class="nav-link" href="{{ route('nilai.index') }}">Nilai</a>
-                        </li>
-
+                        @if (Auth()->guard('web')->user()->akses_level == 'staf')
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('kriteria.index') }}">Kriteria</a>
+                            </li>
+                            <li class="nav-item"> <a class="nav-link"
+                                    href="{{ route('indikator.index') }}">Indikator</a>
+                            </li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('skala.index') }}">Skala</a>
+                            </li>
+                        @endif
+                        @if (Auth()->guard('web')->user()->akses_level == 'admin' || Auth()->guard('web')->user()->akses_level == 'staf')
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('pegawai.index') }}">Pegawai</a>
+                            </li>
+                        @endif
+                        @if (Auth()->guard('web')->user()->akses_level == 'admin' || Auth()->guard('web')->user()->akses_level == 'staf')
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('nilai.index') }}">Nilai</a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('user.index') }}">
-                    <i class="mdi mdi-home menu-icon"></i>
-                    <span class="menu-title">Users Manajement</span>
-                </a>
-            </li>
+            @if (Auth()->guard('web')->user()->akses_level == 'admin')
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('user.index') }}">
+                        <i class="mdi mdi-home menu-icon"></i>
+                        <span class="menu-title">Users Manajement</span>
+                    </a>
+                </li>
+            @endif
+
 
             </li>
         </ul>

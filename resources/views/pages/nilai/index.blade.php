@@ -17,8 +17,11 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">{{ $title }}</h4>
-                    <a href="{{ route('nilai.create') }}" class="btn btn-info btn-rounded btn-fw">Tambah</a>
-                    <div class="row justify-content-end">
+                    @if (Auth()->guard('web')->user()->akses_level == 'staf')
+                        <a href="{{ route('nilai.create') }}" class="btn btn-info btn-rounded btn-fw">Tambah</a>
+                    @endif
+
+                    {{-- <div class="row justify-content-end">
                         <div class="col-md-4 ">
                             <form action="{{ route('nilai.index') }}" method="GET">
                                 <div class="form-group">
@@ -32,7 +35,7 @@
                             </form>
 
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="table-responsive pt-3">
                         <table class="table table-bordered text-center">
