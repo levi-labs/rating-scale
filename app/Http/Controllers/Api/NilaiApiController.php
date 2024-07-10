@@ -40,7 +40,23 @@ class NilaiApiController extends Controller
                     'pegawai.id',
                     'pegawai.nama_lengkap',
                     'nilai.tanggal_nilai',
-                    DB::raw('SUM(nilai.nilai_hasil) as total_nilai')
+                    DB::raw('SUM(nilai.nilai_hasil) as total_nilai'),
+                    DB::raw("CASE 
+                    WHEN SUM(nilai.nilai_hasil) > 85 THEN 'A' 
+                    WHEN SUM(nilai.nilai_hasil) >= 76 AND SUM(nilai.nilai_hasil) <= 85 THEN 'B'
+                    WHEN SUM(nilai.nilai_hasil) >= 61 AND SUM(nilai.nilai_hasil) <= 75 THEN 'C'
+                    WHEN SUM(nilai.nilai_hasil) >= 46 AND SUM(nilai.nilai_hasil) <= 60 THEN 'D'
+                    WHEN SUM(nilai.nilai_hasil) >= 0 AND SUM(nilai.nilai_hasil) <= 45 THEN 'E' 
+                    
+                END as skala"),
+                    DB::raw("CASE 
+                    WHEN SUM(nilai.nilai_hasil) > 85 THEN 'Sangat Baik' 
+                    WHEN SUM(nilai.nilai_hasil) >= 76 AND SUM(nilai.nilai_hasil) <= 85 THEN 'Baik'
+                    WHEN SUM(nilai.nilai_hasil) >= 61 AND SUM(nilai.nilai_hasil) <= 75 THEN 'Cukup Baik'
+                    WHEN SUM(nilai.nilai_hasil) >= 46 AND SUM(nilai.nilai_hasil) <= 60 THEN 'Buruk'
+                    WHEN SUM(nilai.nilai_hasil) >= 0 AND SUM(nilai.nilai_hasil) <= 45 THEN 'Sangat Kurang' 
+                    
+                END as keterangan")
                 )
                 ->whereYear('tanggal_nilai', '=', date('Y', strtotime($date)))
                 ->whereMonth('tanggal_nilai', '=', date('m', strtotime($date)))
@@ -122,11 +138,13 @@ class NilaiApiController extends Controller
         }
 
         try {
-            $indikator_id   = $request->indikator_id;
+            $indikator_id   = json_decode($request->indikator_id, true);
             $pegawai_id     = $request->pegawai_id;
-            $nilai_input    = $request->nilai_input;
+            $nilai_input    = json_decode($request->nilai_input, true);
+
             $tanggal        = $request->tanggal_nilai;
             $date           = date('Y-m');
+
 
             if ($tanggal != null) {
                 $year = date('Y', strtotime($tanggal));
@@ -136,19 +154,50 @@ class NilaiApiController extends Controller
                     ->whereRaw("YEAR(tanggal_nilai) = ? AND MONTH(tanggal_nilai) = ?", [$year, $month])
                     ->get()
                     ->last();
-                dd($tanggal, $get_last_row);
+
+                for ($i = 0; $i < count($indikator_id); $i++) {
+                    $indikator = Indikator::find($indikator_id[$i]);
+                    $nilai   = new Nilai();
+                    $nilai->indikator_id = $indikator_id[$i];
+                    $nilai->pegawai_id = $pegawai_id;
+                    $nilai->tanggal_nilai = $get_last_row->tanggal_nilai;
+                    $nilai->nilai_indikator = $nilai_input[$i];
+                    $nilai->nilai_hasil = ($nilai_input[$i] / $indikator->nilai_pembanding) * $indikator->bobot;
+                    $nilai->save();
+                }
+                return response()->json([
+                    'message' => 'Data Berhasil Ditambahkan',
+                    'data' => [
+                        'pegawai_id' => $pegawai_id,
+                        'indikator_id' => $indikator_id,
+                        'tanggal' => $get_last_row->tanggal_nilai,
+                        'nilai_input' => $nilai_input
+                    ]
+                ], 200);
             } else {
+                $date = date('Y-m-d');
+
+                for ($i = 0; $i < count($indikator_id); $i++) {
+                    $indikator = Indikator::find($indikator_id[$i]);
+                    $nilai   = new Nilai();
+                    $nilai->indikator_id = $indikator_id[$i];
+                    $nilai->pegawai_id = $pegawai_id;
+                    $nilai->tanggal_nilai = $date;
+                    $nilai->nilai_indikator = $nilai_input[$i];
+                    $nilai->nilai_hasil = ($nilai_input[$i] / $indikator->nilai_pembanding) * $indikator->bobot;
+                    $nilai->save();
+                }
+
+                return response()->json([
+                    'message' => 'Data Berhasil Ditambahkan',
+                    'data' => [
+                        'pegawai_id' => $pegawai_id,
+                        'indikator_id' => $indikator_id,
+                        'tanggal' => $date,
+                        'nilai_input' => $nilai_input
+                    ]
+                ], 200);
             }
-
-
-            // dd(json_decode($indikator_id, true), $pegawai_id, $nilai_input);
-            return response()->json([
-                'message' => 'Data Berhasil Ditambahkan',
-                'indikator_id' => $indikator_id,
-                'pegawai_id' => $pegawai_id,
-                'nilai_input' => $nilai_input,
-                'tanggal' => $tanggal
-            ], 200);
         } catch (\Exception $th) {
             return response()->json([
                 'error' => $th->getMessage()
