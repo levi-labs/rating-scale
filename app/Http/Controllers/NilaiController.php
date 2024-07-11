@@ -198,6 +198,7 @@ class NilaiController extends Controller
             $pegawai = DB::table('pegawai')->get();
             $indikator = Indikator::all();
             $nilais = Nilai::select(
+                'id',
                 'pegawai_id',
                 'indikator_id',
                 'nilai_indikator',
@@ -220,11 +221,7 @@ class NilaiController extends Controller
      */
     public function update(Request $request, Nilai $nilai)
     {
-        $request->validate([
-            'indikator_id' => 'required',
 
-
-        ]);
 
         try {
             $id             = $request->id;
@@ -232,19 +229,14 @@ class NilaiController extends Controller
             $id_pegawai     = $request->pegawai_id;
             $nilai_input    = $request->nilai_indikator;
 
-
+            // dd($request->all());
             for ($i = 0; $i < count($id); $i++) {
                 $indikator = Indikator::where('id', $id_indikator[$i])->first();
-                $nilai = Nilai::where('id', $id[$i])->first();
-                $nilai->nilai_indikator = $nilai_input[$i];
+                $nilais = Nilai::where('id', $id[$i])->first();
+                $nilais->nilai_indikator = $nilai_input[$i];
                 $hasil = ($nilai_input[$i] / $indikator->nilai_pembanding) * $indikator->bobot;
-                $nilai->nilai_hasil     = $hasil;
-                // if (session()->has('tanggal')) {
-                //     $nilai->tanggal_nilai = session()->get('tanggal');
-                // } else {
-                //     $nilai->tanggal_nilai   = date('Y-m-d');
-                // }
-                $nilai->save();
+                $nilais->nilai_hasil     = $hasil;
+                $nilais->save();
             }
 
             return redirect()->route('nilai.index')->with('success', 'Data Berhasil diupdate');

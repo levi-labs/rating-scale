@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Indikator;
 use App\Models\Nilai;
+use App\Models\Pegawai;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,19 +43,19 @@ class NilaiApiController extends Controller
                     'nilai.tanggal_nilai',
                     DB::raw('SUM(nilai.nilai_hasil) as total_nilai'),
                     DB::raw("CASE 
-                    WHEN SUM(nilai.nilai_hasil) > 85 THEN 'A' 
-                    WHEN SUM(nilai.nilai_hasil) >= 76 AND SUM(nilai.nilai_hasil) <= 85 THEN 'B'
-                    WHEN SUM(nilai.nilai_hasil) >= 61 AND SUM(nilai.nilai_hasil) <= 75 THEN 'C'
-                    WHEN SUM(nilai.nilai_hasil) >= 46 AND SUM(nilai.nilai_hasil) <= 60 THEN 'D'
-                    WHEN SUM(nilai.nilai_hasil) >= 0 AND SUM(nilai.nilai_hasil) <= 45 THEN 'E' 
+                    WHEN SUM(nilai.nilai_hasil) >=86 THEN 'A' 
+                    WHEN SUM(nilai.nilai_hasil) >= 76 AND SUM(nilai.nilai_hasil) < 86 THEN 'B'
+                    WHEN SUM(nilai.nilai_hasil) >= 61 AND SUM(nilai.nilai_hasil) < 76 THEN 'C'
+                    WHEN SUM(nilai.nilai_hasil) >= 46 AND SUM(nilai.nilai_hasil) < 61 THEN 'D'
+                    WHEN SUM(nilai.nilai_hasil) >= 0 AND SUM(nilai.nilai_hasil) < 46 THEN 'E' 
                     
                 END as skala"),
                     DB::raw("CASE 
-                    WHEN SUM(nilai.nilai_hasil) > 85 THEN 'Sangat Baik' 
-                    WHEN SUM(nilai.nilai_hasil) >= 76 AND SUM(nilai.nilai_hasil) <= 85 THEN 'Baik'
-                    WHEN SUM(nilai.nilai_hasil) >= 61 AND SUM(nilai.nilai_hasil) <= 75 THEN 'Cukup Baik'
-                    WHEN SUM(nilai.nilai_hasil) >= 46 AND SUM(nilai.nilai_hasil) <= 60 THEN 'Buruk'
-                    WHEN SUM(nilai.nilai_hasil) >= 0 AND SUM(nilai.nilai_hasil) <= 45 THEN 'Sangat Kurang' 
+                    WHEN SUM(nilai.nilai_hasil) >= 86 THEN 'Sangat Baik' 
+                    WHEN SUM(nilai.nilai_hasil) >= 76 AND SUM(nilai.nilai_hasil) < 86 THEN 'Baik'
+                    WHEN SUM(nilai.nilai_hasil) >= 61 AND SUM(nilai.nilai_hasil) < 76 THEN 'Cukup Baik'
+                    WHEN SUM(nilai.nilai_hasil) >= 46 AND SUM(nilai.nilai_hasil) < 61 THEN 'Buruk'
+                    WHEN SUM(nilai.nilai_hasil) >= 0 AND SUM(nilai.nilai_hasil) < 46 THEN 'Sangat Kurang' 
                     
                 END as keterangan")
                 )
@@ -134,7 +135,7 @@ class NilaiApiController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'error' => $validator->errors()
-            ], 400);
+            ], 422);
         }
 
         try {
@@ -196,7 +197,7 @@ class NilaiApiController extends Controller
                         'tanggal' => $date,
                         'nilai_input' => $nilai_input
                     ]
-                ], 200);
+                ], 201);
             }
         } catch (\Exception $th) {
             return response()->json([
@@ -216,17 +217,79 @@ class NilaiApiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id, string $tanggal)
     {
-        //
+        try {
+            $resultDate = explode('-', $tanggal);
+            $pegawai    = Pegawai::select('id', 'nama_lengkap')->where('id', $id)->first();
+            $indikator  = Indikator::query()->with(['kriteria' => function ($query) {
+                $query->select('id', 'nama');
+            }])
+                ->select('id', 'nama', 'bobot', 'nilai_pembanding', 'kriteria_id')
+                ->get();
+            $nilai      = Nilai::select(
+                'id',
+                'pegawai_id',
+                'indikator_id',
+                'nilai_indikator',
+                DB::raw('DATE_FORMAT(tanggal_nilai, "%Y-%m") as tanggal_nilai'),
+            )
+                ->whereYear('tanggal_nilai', $resultDate[0])
+                ->whereMonth('tanggal_nilai', $resultDate[1])
+                ->where('pegawai_id', $id)
+                ->get();
+
+            $data =  [
+                'pegawai' => $pegawai->nama_lengkap,
+                'indikator' => $indikator,
+                'nilai' => $nilai,
+
+            ];
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'indikator_id' => 'required',
+            'nilai_id' => 'required',
+            'nilai_input' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        try {
+            $indikator_id   = json_decode($request->indikator_id, true);
+            $nilai_id       = json_decode($request->nilai_id, true);
+            $nilai_input    = json_decode($request->nilai_input, true);
+
+            for ($i = 0; $i < count($indikator_id); $i++) {
+                $indikator = Indikator::find($indikator_id[$i]);
+                $nilai   = Nilai::find($nilai_id[$i]);
+                $nilai->indikator_id = $indikator_id[$i];
+                $nilai->nilai_indikator = $nilai_input[$i];
+                $nilai->nilai_hasil = ($nilai_input[$i] / $indikator->nilai_pembanding) * $indikator->bobot;
+                $nilai->save();
+            }
+
+            return response()->json([
+                'message' => 'Data Berhasil Diupdate'
+            ], 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 
     /**
