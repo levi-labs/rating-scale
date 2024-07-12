@@ -197,7 +197,7 @@ class NilaiApiController extends Controller
                         'tanggal' => $date,
                         'nilai_input' => $nilai_input
                     ]
-                ], 201);
+                ], 200);
             }
         } catch (\Exception $th) {
             return response()->json([
@@ -284,7 +284,7 @@ class NilaiApiController extends Controller
 
             return response()->json([
                 'message' => 'Data Berhasil Diupdate'
-            ], 201);
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'error' => $th->getMessage()
@@ -295,8 +295,22 @@ class NilaiApiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, string $tanggal)
     {
-        //
+        $date = explode('-', $tanggal);
+
+        try {
+            $data =  Nilai::where('pegawai_id', $id)
+                ->whereRaw('DATE_FORMAT(tanggal_nilai, "%Y-%m") = ?', [$date[0] . '-' . $date[1]])
+                ->delete();
+
+            return response()->json([
+                'message' => 'Data Berhasil Dihapus'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 }

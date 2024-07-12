@@ -61,7 +61,7 @@ Route::group(['middleware' => ['jwt.verify']], function ($router) {
         Route::get('/edit/{id}/{tanggal}', 'edit');
         Route::post('/post', 'store');
         Route::put('/update', 'update');
-        Route::delete('/{id}', 'destroy');
+        Route::delete('/{id}/{tanggal}', 'destroy');
     });
 
 
