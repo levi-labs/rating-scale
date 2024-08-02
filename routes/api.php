@@ -20,7 +20,9 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('jwt.verify')->get('test', function (Request $request) {
 //     return 'success';
 // });
-
+Route::get('/mantap', function () {
+    return response()->json(['message' => 'mantap'], 200);
+});
 Route::post('/login', [App\Http\Controllers\Api\UserApiController::class, 'login']);
 Route::group(['middleware' => ['jwt.verify']], function ($router) {
     Route::get('dashboard', [App\Http\Controllers\Api\DashboardApiController::class, 'index']);
