@@ -138,7 +138,7 @@ class NilaiController extends Controller
             )
             ->whereYear('tanggal_nilai', $year)
             ->whereMonth('tanggal_nilai', $month)
-            ->groupBy('pegawai_id', 'pegawai.nama_lengkap', 'tanggal_nilai')
+            ->groupBy('pegawai_id', 'tanggal_nilai')
             ->get();
 
         return view('pages.nilai.show', compact('data', 'title'));
