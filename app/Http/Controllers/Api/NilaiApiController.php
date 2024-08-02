@@ -61,7 +61,7 @@ class NilaiApiController extends Controller
                 )
                 ->whereYear('tanggal_nilai', '=', date('Y', strtotime($date)))
                 ->whereMonth('tanggal_nilai', '=', date('m', strtotime($date)))
-                ->groupBy('pegawai_id', 'pegawai.nama_lengkap', 'tanggal_nilai')
+                ->groupBy('pegawai.id', 'pegawai.nama_lengkap', 'tanggal_nilai')
                 ->get();
             return response()->json($data, 200);
         } catch (\Exception $e) {
