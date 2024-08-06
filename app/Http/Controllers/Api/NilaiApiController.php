@@ -209,9 +209,37 @@ class NilaiApiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id, $tanggal)
     {
-        //
+        try {
+            $explode_date = explode('-', $tanggal);
+            $year = $explode_date[0];
+            $month = $explode_date[1];
+            $pegawai    = Pegawai::select('id', 'nama_lengkap')->where('id', $id)->first()->nama_lengkap;
+            $data       = DB::table('pegawai')
+                ->join('nilai', 'pegawai.id', '=', 'nilai.pegawai_id')
+                ->join('indikators', 'indikators.id', '=', 'nilai.indikator_id')
+                ->select(
+                    'pegawai.id',
+                    'pegawai.nama_lengkap',
+                    'nilai.nilai_indikator',
+                    'nilai.nilai_hasil',
+                    'indikators.nama as indikator',
+                    DB::raw('DATE_FORMAT(tanggal_nilai, "%Y-%m") as tanggal_nilai'),
+                )
+                ->where('pegawai_id', '=', $id)
+                ->whereYear('tanggal_nilai', '=', $year)
+                ->whereMonth('tanggal_nilai', '=', $month)
+                ->get();
+            return response()->json([
+                'pegawai' => $pegawai,
+                'data' => $data
+            ], 200);
+        } catch (\Exception $th) {
+            return response()->json([
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 
     /**

@@ -59,6 +59,7 @@ Route::group(['middleware' => ['jwt.verify']], function ($router) {
     Route::controller(App\Http\Controllers\Api\NilaiApiController::class)->prefix('nilai')->group(function () {
         Route::get('/', 'index');
         Route::get('/list/{id}', 'listNilaiByDate');
+        Route::get('/detail/{id}/{tanggal}', 'show');
         Route::get('/create/{tanggal?}', 'create');
         Route::get('/edit/{id}/{tanggal}', 'edit');
         Route::post('/post', 'store');

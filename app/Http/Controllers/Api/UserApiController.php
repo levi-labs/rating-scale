@@ -117,6 +117,28 @@ class UserApiController extends Controller
         }
     }
 
+    public function updatePassword(Request $request, $id): JsonResponse
+    {
+
+        $validator = Validator::make($request->all(), [
+            'password' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 401);
+        }
+        try {
+            $user = User::find($id);
+            $user->update([
+                'password' => bcrypt($request->password)
+            ]);
+            return response()->json([
+                'message' => 'Password has been changed'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
     public function destroy($id): JsonResponse
     {
         try {

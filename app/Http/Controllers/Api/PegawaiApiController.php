@@ -41,7 +41,12 @@ class PegawaiApiController extends Controller
 
         try {
             $data = new Pegawai();
-            $data->fill($request->all());
+            $data->nama_lengkap = $request->nama_lengkap;
+            $data->nip = $request->nip;
+            $data->jabatan = $request->jabatan;
+            $data->no_hp = $request->no_hp;
+            $data->alamat = $request->alamat;
+            $data->email = $request->email;
             $data->save();
             return response()->json($data, 201);
         } catch (\Exception $e) {
