@@ -71,7 +71,7 @@ class PegawaiApiController extends Controller
     public function update(Request $request, $id): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'nama_lurator' => 'required|string',
+            'nama_lengkap' => 'required|string',
             'nip' => 'required|string',
             'jabatan' => 'required|string',
             'no_hp' => 'required|string',
@@ -85,7 +85,12 @@ class PegawaiApiController extends Controller
 
         try {
             $data = Pegawai::find($id);
-            $data->fill($request->all());
+            $data->nama_lengkap = $request->nama_lengkap;
+            $data->nip = $request->nip;
+            $data->jabatan = $request->jabatan;
+            $data->no_hp = $request->no_hp;
+            $data->alamat = $request->alamat;
+            $data->email = $request->email;
             $data->save();
             return response()->json($data, 201);
         } catch (\Exception $e) {
