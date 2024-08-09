@@ -7,6 +7,7 @@ use App\Models\Skala;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SkalaApiController extends Controller
 {
@@ -21,13 +22,16 @@ class SkalaApiController extends Controller
     }
     public function store(Request $request): JsonResponse
     {
-        $request->validate([
-
+        $validator = Validator::make($request->all(), [
             'nama' => 'required|string',
             'interval' => 'required|string',
             'keterangan' => 'required|string',
-
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 401);
+        }
+
         try {
             $data = Skala::create($request->all());
             return response()->json($data, 200);
@@ -38,13 +42,17 @@ class SkalaApiController extends Controller
 
     public function update(Request $request, $id): JsonResponse
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
 
             'nama' => 'required|string',
             'interval' => 'required|string',
             'keterangan' => 'required|string',
-
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 401);
+        }
+
         try {
             $data = Skala::find($id);
             $data->update($request->all());
